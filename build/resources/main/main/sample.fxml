@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<ScrollPane prefHeight="378.0" prefWidth="573.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Controller">
+   <content>
+      <AnchorPane fx:id="anchorRootPane" prefHeight="525.0" prefWidth="1074.0">
+         <children>
+            <MenuBar prefHeight="25.0" prefWidth="58.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <menus>
+                  <Menu mnemonicParsing="false" text="File">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#menuFileOpen" text="Open..." />
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Options">
+                     <items>
+                        <MenuItem fx:id="menuEnableEditingBoundaries" mnemonicParsing="false" onAction="#onMenuSetBoundaries" text="Enable boundarie editing" />
+                     </items>
+                  </Menu>
+               </menus>
+            </MenuBar>
+            <ImageView fx:id="imageView" fitHeight="1024.0" fitWidth="1280.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#onMouseCkicked" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+               <image>
+                  <Image url="@../../../../../Pictures/Screenpresso/2017-01-21_00h21_37.png" />
+               </image>
+            </ImageView>
+            <AnchorPane layoutX="10.0" layoutY="10.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" style="-fx-background-color: lightgrey;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <Label layoutX="26.0" layoutY="28.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="50.0" text="X-Value: " AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" />
+                  <Label fx:id="labelXValue" layoutX="102.0" layoutY="18.0" maxHeight="30.0" maxWidth="100.0" minHeight="30.0" minWidth="100.0" prefHeight="30.0" prefWidth="100.0" text="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="0.0" />
+                  <Label layoutX="191.0" layoutY="18.0" maxHeight="30.0" maxWidth="50.0" minHeight="30.0" minWidth="50.0" prefHeight="30.0" prefWidth="50.0" text="Y-Value:" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="0.0" />
+                  <Label fx:id="labelYValue" layoutX="262.0" layoutY="18.0" maxHeight="30.0" maxWidth="100.0" minHeight="30.0" minWidth="100.0" prefHeight="30.0" prefWidth="100.0" text="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </content>
+</ScrollPane>

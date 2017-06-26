@@ -1,13 +1,15 @@
-package sample;
+package main;
 
-
+import com.sun.javafx.geom.Point2D;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -15,6 +17,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 
 import javax.swing.*;
@@ -26,8 +31,21 @@ public class Controller {
     File lastFolderInFileChooser;
     boolean setBoundariesModeEnabled = false;
     int timesDoubleKlicked = 0;
-    double xminScene, xmaxScene, yminScene, ymaxScene = 0;
-    double xminHuman, xmaxHuman, yminHuman, ymaxHuman = 0;
+    double xminScene = 0;
+    double xmaxScene = 0;
+    double yminScene = 0;
+    double ymaxScene = 0;
+    double xminHuman = 0;
+    double xmaxHuman = 0;
+    double yminHuman = 0;
+    double ymaxHuman = 0;
+    javafx.scene.shape.Circle markedCoordinate = new Circle(0, 0, 5);
+
+    @FXML
+    private Label labelXValue;
+
+    @FXML
+    private Label labelYValue;
 
     @FXML
     private AnchorPane anchorRootPane;
@@ -38,25 +56,48 @@ public class Controller {
     @FXML
     private ImageView imageView;
 
+
     @FXML
     public void initialize() {
-        imageView.fitHeightProperty().bind(anchorRootPane.heightProperty());
-        imageView.fitWidthProperty().bind(anchorRootPane.widthProperty());
+
+        markedCoordinate.setVisible(false);
+        markedCoordinate.setFill( new Color(0, 0, 0, 0));
+        markedCoordinate.setStroke(new Color(0, 0, 0, 1));
+        anchorRootPane.getChildren().add(markedCoordinate);
+
+        imageView.imageProperty().addListener((observable, oldValue, newValue) -> {
+            imageView.setFitWidth(newValue.getWidth());
+            imageView.setFitHeight(newValue.getHeight());
+        });
+
+
+
     }
 
     @FXML
     void onMouseCkicked(MouseEvent mouseEvent) {
         if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-            if (mouseEvent.getClickCount() == 2) {
-                if (setBoundariesModeEnabled) {
+            if (setBoundariesModeEnabled) {
+                if (mouseEvent.getClickCount() == 2) {
                     String chosenPointName = setPointWithUserDecision(mouseEvent);
                     if (!chosenPointName.equals("")) {
                         askForCoordinateValue(chosenPointName);
                     }
                 }
+            } else if (mouseEvent.getClickCount() == 1) {
+                this.markedCoordinate.setCenterX(mouseEvent.getSceneX());
+                this.markedCoordinate.setCenterY(mouseEvent.getSceneY());
+                this.markedCoordinate.setVisible(true);
+
+                //System.out.println("Mouse on P(" + mouseEvent.getX() +" | " + mouseEvent.getY()  +")");
+
+
+
+                labelXValue.setText(String.valueOf(xminHuman + ((xmaxHuman-xminHuman)/(xmaxScene-xminScene)) * (mouseEvent.getX() - xminScene)));
+                labelYValue.setText(String.valueOf(yminHuman + ((ymaxHuman-yminHuman)/(ymaxScene-yminScene)) * (mouseEvent.getY() - yminScene)));
+
             }
         }
-
     }
 
 
@@ -77,16 +118,16 @@ public class Controller {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.get() == buttonTypeXmin) {
-            xminScene = mouseEvent.getSceneX();
+            xminScene = mouseEvent.getX();
             chosenPointName = "x_min";
         } else if (result.get() == buttonTypeXmax) {
-            xmaxScene = mouseEvent.getSceneX();
+            xmaxScene = mouseEvent.getX();
             chosenPointName = "x_max";
         } else if (result.get() == buttonTypeYmin) {
-            yminScene = mouseEvent.getSceneX();
+            yminScene = mouseEvent.getY();
             chosenPointName = "y_min";
         } else if (result.get() == buttonTypeYmax) {
-            xmaxScene = mouseEvent.getSceneX();
+            ymaxScene = mouseEvent.getY();
             chosenPointName = "y_max";
         }
 
@@ -124,13 +165,17 @@ public class Controller {
         FileChooser fileChooser = new FileChooser();
 
         //Set extension filter
-        FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
-        FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
-        fileChooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
+        FileChooser.ExtensionFilter imageFilter = new FileChooser.ExtensionFilter("IMAGE (*.jpg,*.jpeg,*.gif,*.bmp,*.png", "*.jpg","*.jpeg","*.gif","*.bmp","*.png");
+
+        fileChooser.getExtensionFilters().addAll(imageFilter);
         fileChooser.setInitialDirectory(lastFolderInFileChooser);
         //Show open file dialog
         File file = fileChooser.showOpenDialog(null);
+        if (file==null || file.isDirectory()){
+            return;
+        }
 
+        lastFolderInFileChooser = file.getParentFile();
         Image image = new Image(file.toURI().toString());
         imageView.setImage(image);
 
@@ -147,5 +192,4 @@ public class Controller {
             menuEnableEditingBoundaries.setText("Enable boundarie editing");
         }
     }
-
 }

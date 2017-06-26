@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/graphPictureViewe.iml" filepath="$PROJECT_DIR$/graphPictureViewe.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/graphPictureViewe.iml" filepath="$PROJECT_DIR$/.idea/modules/graphPictureViewe.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/graphPictureViewe_main.iml" filepath="$PROJECT_DIR$/.idea/modules/graphPictureViewe_main.iml" group="graphPictureViewe" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/graphPictureViewe_test.iml" filepath="$PROJECT_DIR$/.idea/modules/graphPictureViewe_test.iml" group="graphPictureViewe" />
     </modules>
   </component>
 </project>

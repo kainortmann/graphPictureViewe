@@ -1,0 +1,27 @@
+group 'de.ti-studium'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+project.ext {
+    mainClass = 'main.Main'
+}
+task fatJar(type: Jar) {
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+    manifest {
+        attributes 'Implementation-Title': 'graphViewer', 'Implementation-Version': version
+        attributes 'Main-Class': mainClass
+    }
+}
+fatJar.dependsOn assemble
